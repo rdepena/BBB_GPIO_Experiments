@@ -25,6 +25,16 @@ void pinMode(int pin, char* mode) {
     setDirection(pin, mode);
 }
 
+void digitalWrite(int pin, int value) {
+    char buffer[256];
+    char valBuffer[256];
+
+    sprintf(buffer, "%s%d/value", GPIO_BASE_PATH, pin);
+    sprintf(valBuffer, "%d", value);
+
+    writeValueToFile(buffer, valBuffer);
+}
+
 static void registerPin (int pin) {
     char str[256];
     sprintf(str, "%d", pin);
@@ -37,16 +47,6 @@ static void setDirection(int pin, char* mode) {
     sprintf(buffer, "%s%d/direction", GPIO_BASE_PATH, pin);
 
     writeValueToFile(buffer, mode);
-}
-
-static void digitalWrite(int pin, int value) {
-    char buffer[256];
-    char valBuffer[256];
-
-    sprintf(buffer, "%s%d/value", GPIO_BASE_PATH, pin);
-    sprintf(valBuffer, "%d", value);
-
-    writeValueToFile(buffer, valBuffer);
 }
 
 static int writeValueToFile(char* path, char* value) {
