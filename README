@@ -1,0 +1,23 @@
+GPIO Experiments on the BeagleBone Black.
+
+Super bare bones implementation using the fs /sys/class/gpio.
+
+Three Steps fs based BeagleBone GPIO:
+
+1) Export the Pin
+2) Set the direction
+3) Write/Read the value.
+
+--Implementation so far
+
+//Exports the pin and sets the direction.
+pinMode(ledPin, OUTPUT);
+
+//Writes HIGH/LOW values to the suplied pin.
+digitalWrite(ledPin, HIGH);
+
+Short-term TODO:
+Move away from fs io
+digitalRead
+analogW/R
+
