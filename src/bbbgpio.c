@@ -1,27 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#define HIGH 1
-#define LOW 0
-
-#define INPUT "in"
-#define OUTPUT "out"
-
-#define EXPORT_PATH "/sys/class/gpio/export"
-#define GPIO_BASE_PATH "/sys/class/gpio/gpio"
-
-// #define EXPORT_PATH "gpio/export"
-// #define GPIO_BASE_PATH "gpio/gpio"
-
-static void registerPin (int pin);
-
-static void setDirection (int pin, char* mode);
+#include "bbbgpio.h"
 
 static int writeValueToFile(char* path, char* value);
 
 void pinMode(int pin, char* mode) {
-    registerPin(pin);
+    exportPin(pin);
     setDirection(pin, mode);
 }
 
@@ -35,21 +20,43 @@ void digitalWrite(int pin, int value) {
     writeValueToFile(buffer, valBuffer);
 }
 
-static void registerPin (int pin) {
+int digitalRead(int pin) {
+    char buffer[256];
+    sprintf(buffer, "%s%d/value", GPIO_BASE_PATH, pin);
+
+    FILE* file = fopen(buffer, "r");
+    int val = 0;
+
+    fscanf(file, "%d", &val);
+    fclose (file);
+
+    return val;
+}
+
+void exportPin(int pin) {
     char str[256];
     sprintf(str, "%d", pin);
 
     writeValueToFile(EXPORT_PATH, str);
 }
 
-static void setDirection(int pin, char* mode) {
+void unExportPin(int pin) {
+    char str[256];
+    sprintf(str, "%d", pin);
+
+    writeValueToFile(UNEXPORT_PATH, str);
+}
+
+void setDirection(int pin, char* mode) {
     char buffer[256];
     sprintf(buffer, "%s%d/direction", GPIO_BASE_PATH, pin);
 
     writeValueToFile(buffer, mode);
 }
 
-static int writeValueToFile(char* path, char* value) {
+
+
+int writeValueToFile(char* path, char* value) {
     FILE *file;
     file = fopen(path, "w");
     int results = fputs(value, file);

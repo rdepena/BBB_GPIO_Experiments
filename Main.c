@@ -1,16 +1,29 @@
 #include <stdio.h>
 #include "src/bbbgpio.h"
 
-int main(void) {
+#define ledPin 60
 
-    int ledPin = 60;
+int main(void) {
 
     pinMode(ledPin, OUTPUT);
 
     digitalWrite(ledPin, HIGH);
 
-    puts("turn it off");
+    int pinValue = digitalRead(ledPin);
+    if (pinValue == HIGH) {
+        printf("pin value at HIGH\n");
+    }
+
+
+    printf("turn it off\n");
     getchar();
 
     digitalWrite(ledPin, LOW);
+
+    pinValue = digitalRead(ledPin);
+    if (pinValue == LOW) {
+        printf("pin value at LOW\n");
+    }
+
+    unExportPin(ledPin);
 }

@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=-g -Wall
 LDFLAGS=
-SOURCES=Main.c
+SOURCES=Main.c src/bbbgpio.c
 EXECUTABLEDEST=bin
 EXECUTABLE=program.o
 JSEXECUTABLE=program.js
@@ -10,7 +10,7 @@ MONITORTOOL=nodemon
 LIBS=
 DEBUGGER=lldb
 SYNCTOOL=rsync
-SYNCFLAGS = -rav * root@192.168.7.2
+SYNCFLAGS = -rav * root@192.168.1.202
 BBBFOLDER =/home/root/gpio_lib/
 
 build:
