@@ -1,30 +1,37 @@
-CC=cc
-CFLAGS=-g -Wall
-LDFLAGS=
-SOURCES=Main.c src/bbbgpio.c
-EXECUTABLEDEST=bin
-EXECUTABLE=program.o
-JSEXECUTABLE=program.js
-MONITOREXTENSIONS=c h
-MONITORTOOL=nodemon
-LIBS=
+CC ?= cc
+AR ?= AR
+CFLAGS =-g -std=c99 -Wall
+SOURCES = src/bbbgpio.c
+OBJECTS = $(SOURCES:.c=.o)
 DEBUGGER=lldb
 SYNCTOOL=rsync
 SYNCFLAGS = -rav * root@192.168.1.202
 BBBFOLDER =/home/root/gpio_lib/
 
-build:
-	$(CC) $(CFLAGS) $(SOURCES) $^ $(LIBS) -o $(EXECUTABLEDEST)/$(EXECUTABLE)
+all:build/bbbgpio.a
 
+build/bbbgpio.a: $(OBJECTS)
+	@mkdir -p build
+	$(AR) rcs $@ $^
+
+bin/test: test.o $(OBJECTS)
+	@mkdir -p bin
+	$(CC) $^ -o $@
+
+%.o: %.c
+	$(CC) $< $(CFLAGS) -c -o $@
 
 clean:
-	rm $(EXECUTABLEDEST)/$(EXECUTABLE) $(EXECUTABLEDEST)/$(JSEXECUTABLE)
+	rm -fr bin build *.o src/*.o
 
-watch:
-	$(MONITORTOOL) --exec "make build && ./$(EXECUTABLEDEST)/$(EXECUTABLE)" -e "$(MONITOREXTENSIONS)"
+test: bin/test
+	echo @./$<
+	@./$<
 
-debug: build
-	$(DEBUGGER) $(EXECUTABLEDEST)/$(EXECUTABLE)
+debug: bin/test
+	$(DEBUGGER) $<
 
-sync:build
+deploy:all
 	$(SYNCTOOL) $(SYNCFLAGS):$(BBBFOLDER)
+
+.PHONY: test clean deploy
