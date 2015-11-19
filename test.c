@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "src/bbbgpio.h"
+
 
 #define blueLed 60
 #define whiteLed 66
@@ -8,12 +10,44 @@
 int main(void) {
 
     int pinValue = 0,
-        buttonValue = 0;
+        buttonValue = 0,
+        result = 0;
 
-    pinMode(blueLed, OUTPUT);
-    pinMode(whiteLed, OUTPUT);
-    pinMode(buttonPin, INPUT);
+    result = exportPin(blueLed);
+    if (result) {
+        perror("blueLed export failed");
+        return EXIT_FAILURE;
+    }
 
+    result = setDirection(blueLed, OUTPUT);
+    if (result) {
+        perror("blueLed set direction failed");
+        return EXIT_FAILURE;
+    }
+
+    result = exportPin(whiteLed);
+    if (result) {
+        perror("whiteLed export failed");
+        return EXIT_FAILURE;
+    }
+
+    result = setDirection(whiteLed, OUTPUT);
+    if (result) {
+        perror("whiteLed set direction failed");
+        return EXIT_FAILURE;
+    }
+
+    result = exportPin(buttonPin);
+    if (result) {
+        perror("buttonPin export failed");
+        return EXIT_FAILURE;
+    }
+
+    result = setDirection(buttonPin, INPUT);
+    if (result) {
+        perror("buttonPin set direction failed");
+        return EXIT_FAILURE;
+    }
 
     digitalRead(blueLed);
     if (pinValue == HIGH) {
@@ -45,4 +79,5 @@ int main(void) {
     unExportPin(blueLed);
     unExportPin(whiteLed);
 
+    return 0;
 }

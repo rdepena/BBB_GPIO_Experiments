@@ -12,15 +12,12 @@
 // #define UNEXPORT_PATH "gpio/unexport"
 // #define GPIO_BASE_PATH "gpio/gpio"
 
+int unExportPin(int pin);
 
-void pinMode(int pin, char* mode);
+int exportPin(int pin);
 
-void unExportPin(int pin);
+int setDirection(int pin, char* mode);
 
-void exportPin(int pin);
-
-void setDirection(int pin, char* mode);
-
-void digitalWrite(int pin, int value);
+int digitalWrite(int pin, int value);
 
 int digitalRead(int pin);

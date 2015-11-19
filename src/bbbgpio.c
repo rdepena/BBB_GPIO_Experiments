@@ -1,23 +1,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include "bbbgpio.h"
 
 static int writeValueToFile(char* path, char* value);
 
-void pinMode(int pin, char* mode) {
-    exportPin(pin);
-    setDirection(pin, mode);
-}
-
-void digitalWrite(int pin, int value) {
+int digitalWrite(int pin, int value) {
     char buffer[256];
     char valBuffer[256];
 
     sprintf(buffer, "%s%d/value", GPIO_BASE_PATH, pin);
     sprintf(valBuffer, "%d", value);
 
-    writeValueToFile(buffer, valBuffer);
+    return writeValueToFile(buffer, valBuffer);
 }
 
 int digitalRead(int pin) {
@@ -25,6 +21,10 @@ int digitalRead(int pin) {
     sprintf(buffer, "%s%d/value", GPIO_BASE_PATH, pin);
 
     FILE* file = fopen(buffer, "r");
+    if(!file) {
+        perror("digitalRead()");
+        return EXIT_FAILURE;
+    }
     int val = 0;
 
     fscanf(file, "%d", &val);
@@ -33,34 +33,40 @@ int digitalRead(int pin) {
     return val;
 }
 
-void exportPin(int pin) {
+int exportPin(int pin) {
     char str[256];
     sprintf(str, "%d", pin);
 
-    writeValueToFile(EXPORT_PATH, str);
+    return writeValueToFile(EXPORT_PATH, str);
 }
 
-void unExportPin(int pin) {
+int unExportPin(int pin) {
     char str[256];
     sprintf(str, "%d", pin);
 
-    writeValueToFile(UNEXPORT_PATH, str);
+    return writeValueToFile(UNEXPORT_PATH, str);
 }
 
-void setDirection(int pin, char* mode) {
+int setDirection(int pin, char* mode) {
     char buffer[256];
     sprintf(buffer, "%s%d/direction", GPIO_BASE_PATH, pin);
 
-    writeValueToFile(buffer, mode);
+    return writeValueToFile(buffer, mode);
 }
 
-
-
-int writeValueToFile(char* path, char* value) {
+static int writeValueToFile(char* path, char* value) {
     FILE *file;
     file = fopen(path, "w");
+    if(!file) {
+        //perror("writeValueToFile() file open");
+        return EXIT_FAILURE;
+    }
     int results = fputs(value, file);
     fclose(file);
+    if(!results) {
+       //perror("writeValueToFile() write");
+       return EXIT_FAILURE;
+    }
 
-    return results;
+    return EXIT_SUCCESS;
 }
