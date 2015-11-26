@@ -1,27 +1,27 @@
 CC ?= cc
-AR ?= AR
-CFLAGS =-g -std=c99 -Wall
+CFLAGS =-g -Wall -Ideps -Wextra
 SOURCES = src/bbbgpio.c
 OBJECTS = $(SOURCES:.c=.o)
 DEBUGGER=lldb
 SYNCTOOL=rsync
-SYNCFLAGS = -rav * root@192.168.1.202
+SYNCFLAGS = -rav * root@192.168.7.2
 BBBFOLDER =/home/root/gpio_lib/
 PREFIX ?= /usr/local
+LINUXPREFIX ?= /usr
 
-all:build/bbbgpio.a
+all:build/bbbgpio.o
 
 install: all
-	ln -f build/bbbgpio.a $(PREFIX)/lib/bbbgpio.a
-	ln -f src/bbbgpio.h $(PREFIX)/include/bbbgpio.h
+	ln -f build/bbbgpio.o $(LINUXPREFIX)/lib/bbbgpio.o
+	ln -f src/bbbgpio.h $(LINUXPREFIX)/include/bbbgpio.h
 
 uninstall:
-	rm -f $(PREFIX)/lib/bbbgpio.a
-	rm -f $(PREFIX)/include/bbbgpio.h
+	rm -f $(LINUXPREFIX)/lib/bbbgpio.o
+	rm -f $(LINUXPREFIX)/include/bbbgpio.h
 
-build/bbbgpio.a: $(OBJECTS)
+build/bbbgpio.o: $(OBJECTS)
 	@mkdir -p build
-	$(AR) rcs $@ $^
+	cp $^ $@
 
 bin/test: test.o $(OBJECTS)
 	@mkdir -p bin
