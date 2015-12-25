@@ -7,11 +7,30 @@
 #define whiteLed 66
 #define buttonPin 44
 
+int pinValue = 0,
+    result = 0;
+
+int setup();
+void loop();
+
 int main(void) {
 
-    int pinValue = 0,
-        buttonValue = 0,
-        result = 0;
+    result = setup();
+    if (result != 0) {
+        return 1;
+    }
+
+    while (1) {
+        loop();
+    }
+
+    unExportPin(blueLed);
+    unExportPin(buttonPin);
+
+    return 0;
+}
+
+int setup() {
 
     result = exportPin(blueLed);
     if (result) {
@@ -22,18 +41,6 @@ int main(void) {
     result = setDirection(blueLed, OUTPUT);
     if (result) {
         perror("blueLed set direction failed");
-        return EXIT_FAILURE;
-    }
-
-    result = exportPin(whiteLed);
-    if (result) {
-        perror("whiteLed export failed");
-        return EXIT_FAILURE;
-    }
-
-    result = setDirection(whiteLed, OUTPUT);
-    if (result) {
-        perror("whiteLed set direction failed");
         return EXIT_FAILURE;
     }
 
@@ -48,36 +55,14 @@ int main(void) {
         perror("buttonPin set direction failed");
         return EXIT_FAILURE;
     }
-
-    digitalRead(blueLed);
-    if (pinValue == HIGH) {
-        printf("pin value at HIGH\n");
-    }
-
-
-    while((buttonValue = digitalRead(buttonPin)) == 0) {
-        digitalWrite(blueLed, LOW);
-        digitalWrite(whiteLed, HIGH);
-    }
-
-    printf("button value: %d\n", buttonValue);
-
-    digitalWrite(blueLed, HIGH);
-    digitalWrite(whiteLed, LOW);
-
-    printf("turn it off\n");
-    getchar();
-
-    digitalWrite(blueLed, LOW);
-    digitalWrite(whiteLed, LOW);
-
-    pinValue = digitalRead(blueLed);
-    if (pinValue == LOW) {
-        printf("pin value at LOW\n");
-    }
-
-    unExportPin(blueLed);
-    unExportPin(whiteLed);
-
     return 0;
+}
+
+void loop() {
+    if (digitalRead(buttonPin) == 1) {
+        digitalWrite(blueLed, HIGH);
+    }
+    else {
+        digitalWrite(blueLed, LOW);
+    }
 }
