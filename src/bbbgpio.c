@@ -33,6 +33,23 @@ int digitalRead(int pin) {
     return val;
 }
 
+int analogRead(int pin) {
+    char buffer[256];
+    sprintf(buffer, "%s/in_voltage%d_raw", AIN_BASE_PATH, pin);
+    FILE* file = fopen(buffer, "r");
+    if(!file) {
+        puts(buffer);
+        perror("analogRead()");
+        return EXIT_FAILURE;
+    }
+    int val = 0;
+
+    fscanf(file, "%d", &val);
+    fclose (file);
+
+    return val;
+}
+
 int exportPin(int pin) {
     char str[256];
     sprintf(str, "%d", pin);
@@ -52,6 +69,11 @@ int setDirection(int pin, char* mode) {
     sprintf(buffer, "%s%d/direction", GPIO_BASE_PATH, pin);
 
     return writeValueToFile(buffer, mode);
+}
+
+int loadADC() {
+    puts(SLOTS);
+    return writeValueToFile(SLOTS, "BB-ADC");
 }
 
 static int writeValueToFile(char* path, char* value) {

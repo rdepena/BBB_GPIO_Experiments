@@ -4,7 +4,7 @@ SOURCES = src/bbbgpio.c
 OBJECTS = $(SOURCES:.c=.o)
 DEBUGGER=lldb
 SYNCTOOL=rsync
-SYNCFLAGS = -rav * root@192.168.7.2
+SYNCFLAGS = -rav * debian@192.168.2.2
 BBBFOLDER =/home/debian/gpio_lib/
 PREFIX ?= /usr/local
 LINUXPREFIX ?= /usr
