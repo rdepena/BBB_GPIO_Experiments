@@ -15,6 +15,9 @@ Analog IO:
 Build (PC and BeagleBone supported):
 make
 
+Deploy to connected BeagleBone (PC and BeagleBone supported):
+make deploy
+
 Run Tests (BeagleBone supported):
 sudo make test
 
