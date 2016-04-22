@@ -12,7 +12,18 @@ Analog IO:
 1) Load the ADC capemgr
 2) Read the value
 
+Build (PC and BeagleBone supported):
+make
 
---todo:
+Run Tests (BeagleBone supported):
+sudo make test
+
+Install (BeagleBone supported): 
+sudo make install
+
+Uninstall (BeagleBone supported):
+sudo make uninstall
+
+--TODO:
 clear analog cape mod.
 add analog write support
