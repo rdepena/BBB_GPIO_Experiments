@@ -1,4 +1,4 @@
-bare bones GPIO library for the BeagleBone implemented using sysfs.
+Bare bones GPIO library for the BeagleBone implemented using sysfs.
 
 Three Steps fs based BeagleBone GPIO:
 
