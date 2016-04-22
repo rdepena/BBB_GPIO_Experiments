@@ -1,18 +1,18 @@
-GPIO Experiments on the BeagleBone Black.
-
-Super bare bones implementation using sysfs.
+bare bones GPIO library for the BeagleBone implemented using sysfs.
 
 Three Steps fs based BeagleBone GPIO:
 
+Digital IO:
 1) Export the Pin
 2) Set the direction
 3) Write/Read the value.
 
---Implementation so far
+Analog IO:
+-- only AnalogRead supported.
+1) Load the ADC capemgr
+2) Read the value
 
-digital read/write on gpio pins.
 
 --todo:
-error checking handling
-analog read/Write
-make install/uninstall tasks.
+clear analog cape mod.
+add analog write support
