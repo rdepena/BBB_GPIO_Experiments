@@ -38,7 +38,6 @@ int analogRead(int pin) {
     sprintf(buffer, "%s/in_voltage%d_raw", AIN_BASE_PATH, pin);
     FILE* file = fopen(buffer, "r");
     if(!file) {
-        puts(buffer);
         perror("analogRead()");
         return EXIT_FAILURE;
     }
