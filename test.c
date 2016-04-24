@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/bbbgpio.h"
+#include "src/bbgpio.h"
 
 
 #define blueLed 60

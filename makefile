@@ -1,6 +1,6 @@
 CC ?= cc
 CFLAGS =-g -Wall -Ideps -Wextra
-SOURCES = src/bbbgpio.c
+SOURCES = src/bbgpio.c
 OBJECTS = $(SOURCES:.c=.o)
 DEBUGGER=lldb
 SYNCTOOL=rsync
@@ -9,17 +9,17 @@ BBBFOLDER =/home/debian/gpio_lib/
 PREFIX ?= /usr/local
 LINUXPREFIX ?= /usr
 
-all:build/bbbgpio.o
+all:build/bbgpio.o
 
 install: all
-	ln -f build/bbbgpio.o $(LINUXPREFIX)/lib/bbbgpio.o
-	ln -f src/bbbgpio.h $(LINUXPREFIX)/include/bbbgpio.h
+	ln -f build/bbgpio.o $(LINUXPREFIX)/lib/bbgpio.o
+	ln -f src/bbgpio.h $(LINUXPREFIX)/include/bbgpio.h
 
 uninstall:
-	rm -f $(LINUXPREFIX)/lib/bbbgpio.o
-	rm -f $(LINUXPREFIX)/include/bbbgpio.h
+	rm -f $(LINUXPREFIX)/lib/bbgpio.o
+	rm -f $(LINUXPREFIX)/include/bbgpio.h
 
-build/bbbgpio.o: $(OBJECTS)
+build/bbgpio.o: $(OBJECTS)
 	@mkdir -p build
 	cp $^ $@
 
