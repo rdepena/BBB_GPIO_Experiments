@@ -1,4 +1,4 @@
-bare bones GPIO library for the BeagleBone implemented using sysfs.
+Bare bones GPIO library for the BeagleBone implemented using sysfs.
 
 Three Steps fs based BeagleBone GPIO:
 
@@ -12,6 +12,20 @@ Analog IO:
 1) Load the ADC capemgr
 2) Read the value
 
+Build (PC and BeagleBone supported):
+make
 
---todo:
+Deploy to connected BeagleBone (PC and BeagleBone supported):
+make deploy
+
+Run Tests (BeagleBone supported):
+sudo make test
+
+Install (BeagleBone supported):
+sudo make install
+
+Uninstall (BeagleBone supported):
+sudo make uninstall
+
+--TODO:
 add analog write support
